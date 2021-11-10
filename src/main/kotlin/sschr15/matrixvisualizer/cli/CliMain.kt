@@ -1,5 +1,8 @@
-package sschr15.matrixvisualizer
+@file:JvmName("CLI")
 
+package sschr15.matrixvisualizer.cli
+
+import sschr15.matrixvisualizer.generateMatrix
 import kotlin.io.path.Path
 import kotlin.io.path.readLines
 

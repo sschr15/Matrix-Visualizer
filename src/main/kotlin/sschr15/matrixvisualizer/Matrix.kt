@@ -5,8 +5,6 @@ import org.apache.batik.transcoder.TranscoderOutput
 import org.apache.batik.transcoder.image.PNGTranscoder
 import org.jfree.svg.SVGGraphics2D
 import java.awt.Color
-import java.awt.image.BufferedImage
-import javax.imageio.ImageIO
 import kotlin.io.path.Path
 import kotlin.io.path.outputStream
 import kotlin.io.path.writeText
@@ -35,7 +33,9 @@ fun generateMatrix(
     matrix: List<String>,
     heightAbove: Int,
     filename: String = "kirbtris",
-    extraLinesBelow: Int = 1
+    extraLinesBelow: Int = 1,
+    foregroundColor: Color = Color.WHITE,
+    backgroundColor: Color = Color.BLACK,
 ) {
     val height = matrix.size + extraLinesBelow
     val width = matrix.map { it.length }.maxOrNull() ?: 0
@@ -54,10 +54,10 @@ fun generateMatrix(
         (height + 2) * MatrixConstants.SCALING
     )
 
-    svg.color = Color.BLACK
+    svg.color = backgroundColor
     svg.fillRect(0, 0, width + 2, height + 2, MatrixConstants.SCALING)
 
-    svg.color = Color.WHITE
+    svg.color = foregroundColor
     for (y in 0 until height) for (x in 0 until width) {
         val char = fixedMatrix[y][x]
         if (char != ' ') {
@@ -65,7 +65,7 @@ fun generateMatrix(
         }
     }
 
-    svg.color = Color.BLACK
+    svg.color = backgroundColor
     // draw horizontal borders
     for (y in 0..height) for (x in 0 until width) {
         val isBorder = when (y) {
@@ -163,7 +163,7 @@ fun generateMatrix(
     }
 
     // edges
-    svg.color = Color.WHITE
+    svg.color = foregroundColor
     // left
     svg.fillRect(1 - borderPlusThickness, heightAbove + 1 + borderPlusThickness, MatrixConstants.THICKNESS, height - heightAbove - 2 * border, MatrixConstants.SCALING)
     // right

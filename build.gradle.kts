@@ -5,6 +5,7 @@ plugins {
     java
     application
     id("com.github.johnrengelman.shadow") version "7.1.0"
+    id("org.openjfx.javafxplugin") version "0.0.10"
 }
 
 group = "sschr15"
@@ -23,19 +24,29 @@ dependencies {
     // and batik transcoder converting the svg to a png or other formats
     "shadow"(implementation("org.apache.xmlgraphics:batik-transcoder:1.14")!!)
     "shadow"(implementation("org.apache.xmlgraphics:batik-codec:1.14")!!)
+
+    // javafx is preferred over swing
+    "shadow"(implementation("org.openjfx:javafx:17.0.1")!!)
 }
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
-kotlin {
-    jvmToolchain {
-        val thiz = this as JavaToolchainSpec
-        thiz.languageVersion.set(JavaLanguageVersion.of(16))
-    }
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+javafx {
+    version = "17.0.1"
+    modules = listOf(
+        "javafx.controls",
+        "javafx.fxml",
+        "javafx.web",
+    )
 }
 
 application {
-    mainClass.set("sschr15.matrixvisualizer.MainKt")
+    mainClass.set("sschr15.matrixvisualizer.gui.JavaFX")
 }
