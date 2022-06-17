@@ -6,9 +6,11 @@ import kotlin.io.path.readLines
 fun main() {
     println("If no input is provided, an example matrix will be created instead with fake inputs.")
     print("Enter the path to the file: ")
-    val matrixLocation = (readLine() ?: "").ifEmpty {
+    val matrixLocation = (readLine() ?: "").let {
+        if (it.matches(Regex("\"[^\"]*\""))) it.removeSurrounding("\"") else it
+    }.ifEmpty {
         println("Enter the path to the file: matrix.txt")
-        println("Enter the path to the output file: example")
+        println("Enter the path to the output file (without an extension): example")
         println("Enter the number of extra rows above the matrix: 2")
         println("Enter the number of extra rows below the matrix (default 1): 1")
         println("Generating")
@@ -16,8 +18,10 @@ fun main() {
         return
     }
 
-    print("Enter the path to the output file: ")
-    val outputFileName = readLine()!!
+    print("Enter the path to the output file (without an extension): ")
+    val outputFileName = readLine()!!.let {
+        if (it.matches(Regex("\"[^\"]*\""))) it.removeSurrounding("\"") else it
+    }
     print("Enter the number of extra rows above the matrix: ")
     val extraRowsAbove = readLine()!!.toInt()
     print("Enter the number of extra rows below the matrix (default 1): ")
